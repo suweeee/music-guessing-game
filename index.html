@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜歌遊戲 - 測試你的音樂知識</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="text-center my-5">
+            <h1 class="display-4"><i class="fas fa-music"></i> 炫音派對 <i class="fas fa-headphones"></i></h1>
+            <p class="lead">在音樂的節奏中展現你的實力！</p>
+        </header>
+
+        <div class="game-container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <div id="timer" class="display-6 mb-3">30</div>
+                                <div id="score" class="h4">分數: 0</div>
+                            </div>
+                            
+                            <div class="music-player text-center mb-4">
+                                <button id="playButton" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-play"></i> 播放音樂
+                                </button>
+                                <div id="audioProgress" class="progress mt-3" style="height: 10px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div class="options-container">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-primary w-100 option-btn" data-index="0"></button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-primary w-100 option-btn" data-index="1"></button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-primary w-100 option-btn" data-index="2"></button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-primary w-100 option-btn" data-index="3"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 遊戲結束對話框 -->
+        <div class="modal fade" id="gameOverModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">遊戲結束！</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>你的最終得分是: <span id="finalScore">0</span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-primary" id="restartGame">重新開始</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Howler.js for audio -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/script.js"></script>
+</body>
+</html>
