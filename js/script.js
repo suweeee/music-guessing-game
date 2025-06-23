@@ -39,7 +39,7 @@ const songs = [
     {
         title: "That's so true",
         artist: "Gracie Abrams",
-        url: "audio/That's so true.mp3",
+        url: "audio/That’s so true .mp3",
         options: ["That's so true", "Spicy", "Seoul city", "Come around me"]
     },
     {
@@ -128,6 +128,12 @@ class MusicGame {
                 this.resetGame();
                 this.startNewGame();
             });
+        });
+        
+        document.querySelector('#gameInstructionsModal .btn-primary').addEventListener('click', () => {
+            // 確保模態框關閉後初始化遊戲
+            const gameInstance = new MusicGame();
+            console.log('遊戲已啟動！');
         });
     }
 
@@ -573,6 +579,64 @@ class MusicGame {
         this.progressInterval = setInterval(updateProgressBar, 100);
     }
 }
+
+class MusicMixer {
+    constructor() {
+        this.songs = songs;
+        this.mixedSongs = [];
+        this.mixer = null;
+        this.initMixer();
+    }
+
+    initMixer() {
+        // 隨機選擇兩首歌
+        const shuffledSongs = this.shuffleArray([...this.songs]);
+        this.mixedSongs = shuffledSongs.slice(0, 2);
+
+        console.log('混音歌曲:', this.mixedSongs.map(song => song.title));
+
+        // 初始化混音播放器
+        this.mixer = [
+            new Howl({
+                src: [this.mixedSongs[0].url],
+                volume: 0.5,
+                html5: true
+            }),
+            new Howl({
+                src: [this.mixedSongs[1].url],
+                volume: 0.5,
+                html5: true
+            })
+        ];
+    }
+
+    playMix() {
+        this.mixer.forEach(player => player.play());
+    }
+
+    stopMix() {
+        this.mixer.forEach(player => player.stop());
+    }
+
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+}
+
+// 在遊戲中初始化混音功能
+const musicMixer = new MusicMixer();
+
+// 示例：播放混音
+musicMixer.playMix();
+
+// 示例：停止混音
+setTimeout(() => {
+    musicMixer.stopMix();
+}, 10000); // 10秒後停止混音
 
 // 當頁面載入完成後初始化遊戲
 document.addEventListener('DOMContentLoaded', () => {

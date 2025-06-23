@@ -10,6 +10,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        /* 確保模態框背景不會影響其他元素的操作 */
+        .modal-backdrop {
+            z-index: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -53,6 +59,24 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="music-preview text-center mb-4">
+                                <button id="previewButton" class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-headphones"></i> 歌曲預覽
+                                </button>
+                            </div>
+
+                            <div class="volume-control text-center mb-4">
+                                <label for="volumeRange" class="form-label">音量控制</label>
+                                <input type="range" id="volumeRange" class="form-range" min="0" max="1" step="0.1" value="0.5">
+                            </div>
+
+                            <div class="leaderboard text-center mb-4">
+                                <h2>排行榜</h2>
+                                <ul id="leaderboardList" class="list-group">
+                                    <!-- 排行榜項目將動態生成 -->
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,6 +101,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- 遊戲說明模態框 -->
+        <div class="modal fade" id="gameInstructionsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">遊戲說明</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>歡迎來到炫音派對！</p>
+                        <p>遊戲規則：</p>
+                        <ul>
+                            <li>點擊播放按鈕聆聽音樂。</li>
+                            <li>從四個選項中選擇正確的歌曲名稱。</li>
+                            <li>每答對一題可獲得 10 分。</li>
+                            <li>遊戲時間為 60 秒，請盡量答對更多題目！</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">開始遊戲</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
@@ -85,5 +134,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <!-- Custom JS -->
     <script src="js/script.js"></script>
+    <script>
+        // 自動顯示遊戲說明
+        window.onload = function() {
+            const instructionsModal = new bootstrap.Modal(document.getElementById('gameInstructionsModal'));
+            instructionsModal.show();
+        };
+
+        const previewButton = document.getElementById('previewButton');
+        const previewAudio = new Howl({
+            src: ['audio/Black mamba.mp3'], // 預覽音樂檔案
+            volume: 0.5,
+        });
+
+        previewButton.addEventListener('click', () => {
+            if (previewAudio.playing()) {
+                previewAudio.stop();
+            } else {
+                previewAudio.play();
+            }
+        });
+
+        const volumeRange = document.getElementById('volumeRange');
+
+        volumeRange.addEventListener('input', () => {
+            const volume = parseFloat(volumeRange.value);
+            previewAudio.volume(volume); // 調整預覽音樂的音量
+            // 如果有其他音樂播放器，請同步調整音量
+        });
+
+        const leaderboardList = document.getElementById('leaderboardList');
+
+        function updateLeaderboard(scores) {
+            leaderboardList.innerHTML = '';
+            scores.sort((a, b) => b.score - a.score); // 按分數排序
+            scores.forEach((entry, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = `${index + 1}. ${entry.name}: ${entry.score} 分`;
+                leaderboardList.appendChild(listItem);
+            });
+        }
+
+        // 示例分數資料
+        const exampleScores = [
+            { name: '玩家A', score: 120 },
+            { name: '玩家B', score: 100 },
+            { name: '玩家C', score: 80 },
+        ];
+
+        // 初始化排行榜
+        updateLeaderboard(exampleScores);
+
+        const startGameButton = document.querySelector('#gameInstructionsModal .btn-primary');
+
+        startGameButton.addEventListener('click', () => {
+            const instructionsModal = bootstrap.Modal.getInstance(document.getElementById('gameInstructionsModal'));
+            instructionsModal.hide(); // 確保模態框正確關閉
+
+            // 初始化遊戲邏輯
+            const gameInstance = new MusicGame();
+            console.log('遊戲已啟動！');
+        });
+    </script>
 </body>
 </html>

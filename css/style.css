@@ -228,3 +228,26 @@ body::before {
     pointer-events: none;
     opacity: 0.7;
 }
+
+/* 添加霓虹燈效果 */
+.neon-text {
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+    animation: neon-flicker 1.5s infinite alternate;
+}
+
+@keyframes neon-flicker {
+    0% {
+        text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+    }
+    100% {
+        text-shadow: 0 0 2px #0ff, 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+}
+
+/* 按鈕點擊動畫 */
+.btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
